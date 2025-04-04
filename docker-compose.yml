@@ -1,0 +1,36 @@
+services:
+  example-program:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: example-program
+    ports:
+      - "2223:2223"
+    networks:
+      - otel-network
+
+  otel-collector-0-119-0:
+    image: otel/opentelemetry-collector-contrib:0.119.0
+    container_name: otel-collector-0-119-0
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./otel119logs:/logs
+    networks:
+      - otel-network
+    user: "1000:1000"
+
+  otel-collector-0-121-0:
+    image: otel/opentelemetry-collector-contrib:0.121.0
+    container_name: otel-collector-0-121-0
+    command: ["--config=/etc/otelcol-contrib/config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
+      - ./otel121logs:/logs
+    networks:
+      - otel-network
+    user: "1000:1000"
+
+networks:
+  otel-network:
+    driver: bridge
