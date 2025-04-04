@@ -17,7 +17,7 @@ Run `make run-example` to run the example. This will spin up two collectors, one
 
 When scraping metrics from a spec-conformant Prometheus exporter, it decides what format to send the response in via Content-Type Negotiation. You can see the protocol names mapped to the `Content-Type` [here](https://github.com/prometheus/prometheus/blob/32d306854b77352fec62f5df1268d745b84dfd96/config/config.go#L516-L529).
 
-The Makefile provides 3 targets to compare what `metric.counter` is exposed as in the different formats. The example must be running on your machine for these targets to work.
+The Makefile provides 4 targets to compare what `metric.counter` is exposed as in the different formats. The example must be running on your machine for these targets to work.
 
 ### make text-metrics
 
@@ -30,9 +30,20 @@ $ make text-metrics
 metric_counter_total{A="B",C="D",otel_scope_name="go.opentelemetry.io/contrib/examples/prometheus",otel_scope_version=""} 5
 ```
 
+### make text-metrics-1.0.0
+
+`make text-metrics-1.0.0` will request the protocol `PrometheusText1.0.0` by providing the header `Accept: text/plain;version=1.0.0`.
+
+```
+$ make text-metrics-1.0.0
+# HELP metric_counter_total a simple counter
+# TYPE metric_counter_total counter
+metric_counter_total{A="B",C="D",otel_scope_name="go.opentelemetry.io/contrib/examples/prometheus",otel_scope_version=""} 5
+```
+
 ### make text-metrics-utf8
 
-`make text-metrics-utf8` will request the protocol `PrometheusText1.0.0` by providing the header `Accept: text/plain;version=1.0.0;escaping=allow-utf-8`.
+`make text-metrics-utf8` will request the protocol `PrometheusText1.0.0` by providing the header `Accept: text/plain;version=1.0.0;escaping=allow-utf-8`. Note the new `escaping` directive as part of the header.
 
 ```
 $ make text-metrics-utf8

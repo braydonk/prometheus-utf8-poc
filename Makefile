@@ -21,6 +21,14 @@ text-metrics:
 	@curl -s $(METRICS_URL) | grep "metric_counter"
 
 .PHONY: text-metrics-utf8
+text-metrics-1.0.0:
+	@curl -s \
+		-H "Accept: text/plain;version=1.0.0;" \
+		$(METRICS_URL) | \
+		grep "metric_counter"
+
+
+.PHONY: text-metrics-utf8
 text-metrics-utf8:
 	@curl -s \
 		-H "Accept: text/plain;version=1.0.0;escaping=allow-utf-8" \
